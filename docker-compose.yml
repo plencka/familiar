@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  familiar:
+    image: familiar
+    volumes:
+      - familiar:/usr
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+
+volumes:
+  familiar:
