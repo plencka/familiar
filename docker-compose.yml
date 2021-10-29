@@ -3,6 +3,7 @@ version: '3.4'
 services:
   familiar:
     image: familiar
+    working_dir: /usr
     volumes:
       - familiar:/usr
     build:
