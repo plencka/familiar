@@ -3,13 +3,14 @@ name: 'Build'
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     types:
       - opened
       - edited
     branches:
-      - main
+      - master
+      
 jobs:
   build:
     runs-on: ubuntu-latest
