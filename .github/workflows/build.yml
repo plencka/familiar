@@ -8,6 +8,7 @@ on:
     types:
       - opened
       - edited
+      - synchronize
     branches:
       - master
       
@@ -17,4 +18,5 @@ jobs:
     steps:
     - uses: docker-practice/actions-setup-docker@master
     - run: |
-        docker run --rm familiar
+        docker build -t familiar .
+        docker run -rm familiar
