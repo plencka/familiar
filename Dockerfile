@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     unzip \
     g++ \
-    mingw-w64 \
+    g++-mingw-w64-x86-64 \
     libsfml-dev
 
 COPY src /application/src/
