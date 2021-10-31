@@ -1,0 +1,5 @@
+name: 'Build'
+description: 'Builds binaries of the application.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
