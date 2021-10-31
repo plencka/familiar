@@ -16,7 +16,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: docker-practice/actions-setup-docker@master
-    - run: |
-        docker build -t familiar .
-        docker run -rm familiar
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+       
+      - name: Docker setup
+        uses: docker-practice/actions-setup-docker@master
+        
+      - name: Build and run
+        run: |
+              docker build -t familiar .
+              docker run -rm familiar
