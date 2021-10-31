@@ -3,11 +3,11 @@ version: '3.4'
 services:
   familiar:
     image: familiar
-    working_dir: /usr
+    working_dir: /application
     volumes:
-      - familiar:/usr
+      - familiar:/application
     build:
-      context: .
+      context: ./
       dockerfile: ./Dockerfile
 
 volumes:
