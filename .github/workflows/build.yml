@@ -1,5 +1,13 @@
 name: 'Build'
-description: 'Builds binaries of the application.'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: docker-practice/actions-setup-docker@master
+    - run: |
+        docker run -rm familiar
