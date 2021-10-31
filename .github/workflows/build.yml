@@ -17,4 +17,4 @@ jobs:
     steps:
     - uses: docker-practice/actions-setup-docker@master
     - run: |
-        docker run -rm familiar
+        docker run --rm familiar
