@@ -25,4 +25,4 @@ jobs:
       - name: Build and run
         run: |
               docker build -t familiar .
-              docker run -rm familiar
+              docker run --rm familiar
