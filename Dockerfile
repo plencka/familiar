@@ -4,7 +4,6 @@ ARG APP_NAME=Familiar
 
 RUN apt-get update && apt-get install -y \
     build-essential \
-    wget \
     unzip \
     g++ \
     mingw-w64 \
@@ -24,8 +23,8 @@ RUN mkdir Linux \
 
 # Windows Build
 # static link
-RUN wget https://github.com/SFML/SFML/releases/download/2.5.1/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip -P /tmp -nc \
-    && unzip /tmp/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit -d /application \
+ADD https://github.com/SFML/SFML/releases/download/2.5.1/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip /tmp
+RUN unzip /tmp/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit -d /application \
     && mkdir Win_x86_64 \
     && x86_64-w64-mingw32-g++ main.cpp -o Win_x86_64/${APP_NAME}.exe \
     -L/application/SFML-2.5.1/lib -I/application/SFML-2.5.1/include \
