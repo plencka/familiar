@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y \
 COPY src /application/src/
 WORKDIR /application/src/
 
+ADD https://github.com/SFML/SFML/releases/download/2.5.1/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip /tmp
+RUN unzip /tmp/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit -d /application
+
 RUN mkdir builds
 
 # Linux Build
@@ -25,9 +28,7 @@ RUN mkdir builds/Linux \
 
 # Windows Build
 # static link
-ADD https://github.com/SFML/SFML/releases/download/2.5.1/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip /tmp
-RUN unzip /tmp/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit -d /application \
-    && mkdir builds/Win_x86_64 \
+RUN mkdir builds/Win_x86_64 \
     && x86_64-w64-mingw32-g++ main.cpp -o builds/Win_x86_64/${APP_NAME}.exe \
     -L/application/SFML-2.5.1/lib -I/application/SFML-2.5.1/include \
     -static-libstdc++ -static-libgcc \
