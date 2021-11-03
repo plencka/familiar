@@ -362,5 +362,11 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# Custom
+### CUSTOM
+
+# Possible app build paths
 builds
+build
+out
+install
+vsbuild
