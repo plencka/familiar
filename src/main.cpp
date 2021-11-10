@@ -3,9 +3,9 @@
 int main()
 {
     // SFML EXAMPLE
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(200, 200), "Hello world!");
     sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Red);
+    shape.setFillColor(sf::Color::Magenta);
 
     while (window.isOpen())
     {

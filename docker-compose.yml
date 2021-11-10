@@ -1,14 +1,11 @@
 version: '3.4'
 
 services:
-  familiar:
-    image: familiar
-    working_dir: /application
-    volumes:
-      - familiar:/application
+  app:
     build:
       context: ./
       dockerfile: ./Dockerfile
-
-volumes:
-  familiar:
+    container_name: familiar
+    working_dir: /application
+    volumes:
+      - .:/application
