@@ -13,6 +13,7 @@ ADD https://github.com/SFML/SFML/releases/download/2.5.1/SFML-2.5.1-windows-gcc-
 RUN unzip /tmp/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit -d /externals
 
 COPY src /application/src/
+COPY game /application/game/
 WORKDIR /application/src/
 
 RUN rm -rf ../builds \
@@ -32,4 +33,6 @@ RUN rm -rf ../builds \
     -lsfml-system-s \
     -lsfml-audio-s \
     -lfreetype \
-    -lopengl32 -lwinmm -lgdi32
+    -lopengl32 -lwinmm -lgdi32 \
+    && cp -R /application/game/data ../builds/Linux \
+    && cp -R /application/game/data ../builds/Win_x86_64

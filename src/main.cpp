@@ -3,7 +3,7 @@
 int main()
 {
     sf::Font font;
-    if (!font.loadFromFile("arial.ttf"))
+    if (!font.loadFromFile("data/fonts/Oswald.ttf"))
     {
         return -1;
     }
