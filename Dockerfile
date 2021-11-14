@@ -31,4 +31,5 @@ RUN rm -rf ../builds \
     -lsfml-window-s \
     -lsfml-system-s \
     -lsfml-audio-s \
+    -lfreetype \
     -lopengl32 -lwinmm -lgdi32

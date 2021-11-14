@@ -2,10 +2,19 @@
 
 int main()
 {
-    // SFML EXAMPLE
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf"))
+    {
+        return -1;
+    }
+
     sf::RenderWindow window(sf::VideoMode(200, 200), "Hello world!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Magenta);
+    sf::Text text;
+    text.setFont(font);
+    text.setString(__DATE__);
+    text.setCharacterSize(24);
+    text.setFillColor(sf::Color::Red);
+    text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 
     while (window.isOpen())
     {
@@ -17,7 +26,7 @@ int main()
         }
 
         window.clear();
-        window.draw(shape);
+        window.draw(text);
         window.display();
     }
 
