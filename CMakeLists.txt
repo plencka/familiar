@@ -2,9 +2,15 @@ cmake_minimum_required(VERSION 3.19)
 
 project(Familiar)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-add_subdirectory (src)
+include_directories(src)
+include_directories(src/FamiliarEngine )
+include_directories(src/FamiliarGame)
 
-target_link_libraries(Familiar ${CONAN_LIBS})
+add_subdirectory(src)
