@@ -18,13 +18,14 @@ WORKDIR /application/src/
 
 RUN rm -rf ../builds \
     && mkdir -p ../builds/Linux \
-    && g++ -o ../builds/Linux/${APP_NAME} main.cpp \
+    && g++ -std=c++14 -o ../builds/Linux/${APP_NAME} ./FamiliarGame/main.cpp \
     -lsfml-graphics \
     -lsfml-window \
     -lsfml-system \
     -lsfml-audio \
+    -L. -I. \
     && mkdir -p ../builds/Win_x86_64 \
-    && x86_64-w64-mingw32-g++ main.cpp -o ../builds/Win_x86_64/${APP_NAME}.exe \
+    && x86_64-w64-mingw32-g++ -std=c++14 ./FamiliarGame/main.cpp -o ../builds/Win_x86_64/${APP_NAME}.exe \
     -L/externals/SFML-2.5.1/lib -I/externals/SFML-2.5.1/include \
     -static-libstdc++ -static-libgcc \
     -DSFML_STATIC \
@@ -34,5 +35,6 @@ RUN rm -rf ../builds \
     -lsfml-audio-s \
     -lfreetype \
     -lopengl32 -lwinmm -lgdi32 \
+    -L. -I. \
     && cp -R /application/game/data ../builds/Linux \
     && cp -R /application/game/data ../builds/Win_x86_64
