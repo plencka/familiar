@@ -2,11 +2,9 @@
 
 int main()
 {
-    auto window = new MainWindow();
+    std::unique_ptr<MainWindow> window = std::make_unique<MainWindow>();
     window->open();
 
     while (window->update());
-
-    delete window;
     return 0;
 }

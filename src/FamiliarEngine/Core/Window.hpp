@@ -4,14 +4,15 @@
 namespace FamiliarEngine {
 
 	class WindowSettings {
-		sf::VideoMode mode;
+		unsigned int width;
+		unsigned int height;
 		sf::String title = "";
 
 	};
 
 	class IWindowContainer : public sf::RenderWindow {
 	private:
-		std::map<RenderLayerOrder, RenderLayer*> renderLayers = {};
+		std::map<RenderLayerOrder, std::unique_ptr<RenderLayer>> renderLayers = {};
 
 		void handleEvents() {
 			sf::Event sfmlEvent;
@@ -33,7 +34,7 @@ namespace FamiliarEngine {
 
 	protected:
 		void addLayer(RenderLayerOrder order) {
-			renderLayers.emplace(order, new RenderLayer(order));
+			renderLayers.emplace(order, std::make_unique<RenderLayer>(order));
 		}
 
 		IWindowContainer() {
@@ -41,10 +42,6 @@ namespace FamiliarEngine {
 		}
 
 		~IWindowContainer() {
-			for (auto & renderLayer : renderLayers)
-			{
-				delete renderLayer.second;
-			}
 			renderLayers.clear();
 		}
 
