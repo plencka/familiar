@@ -4,10 +4,31 @@
 namespace FamiliarEngine {
 
 	class WindowSettings {
-		unsigned int width;
-		unsigned int height;
+		sf::VideoMode videoMode;
 		sf::String title = "";
+		sf::Uint32 style = sf::Style::Default; // SFML Window Style
+	public:
+		WindowSettings() {
+			videoMode = sf::VideoMode(200, 200);
+		};
 
+		WindowSettings setNativeFullScreen() {
+			videoMode = sf::VideoMode::getDesktopMode();
+			style = sf::Style::Fullscreen;
+			return *this;
+		}
+
+		sf::VideoMode getVideoMode() {
+			return videoMode;
+		};
+
+		sf::String getTitle() {
+			return title;
+		}
+
+		sf::Uint32 getStyle() {
+			return style;
+		}
 	};
 
 	class IWindowContainer : public sf::RenderWindow {
@@ -47,7 +68,7 @@ namespace FamiliarEngine {
 
 	public:
 		virtual void open() {
-			sf::RenderWindow::create(sf::VideoMode(200, 200), "Default window");
+			sf::RenderWindow::create(sf::VideoMode(200, 200), "Unconfigured window");
 		};
 
 		bool update() {

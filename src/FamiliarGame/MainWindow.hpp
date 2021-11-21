@@ -6,6 +6,7 @@ public:
 	MainWindow() : FamiliarEngine::IWindowContainer(){};
 
 	virtual void open() override {
-		sf::RenderWindow::create(sf::VideoMode(200, 200), "MainWindow");
+		FamiliarEngine::WindowSettings windowSettings = FamiliarEngine::WindowSettings().setNativeFullScreen();
+		sf::RenderWindow::create(windowSettings.getVideoMode(), windowSettings.getTitle(), windowSettings.getStyle());
 	};
 };
