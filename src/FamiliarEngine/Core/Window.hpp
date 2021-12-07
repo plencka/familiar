@@ -31,7 +31,7 @@ namespace FamiliarEngine {
 		}
 	};
 
-	class IWindowContainer : public sf::RenderWindow {
+	class WindowHandlerBase : public sf::RenderWindow {
 	private:
 		std::map<RenderLayerOrder, std::unique_ptr<RenderLayer>> renderLayers = {};
 
@@ -58,11 +58,11 @@ namespace FamiliarEngine {
 			renderLayers.emplace(order, std::make_unique<RenderLayer>(order));
 		}
 
-		IWindowContainer() {
+		WindowHandlerBase() {
 			addLayer(RenderLayerOrder::Default);
 		}
 
-		~IWindowContainer() {
+		~WindowHandlerBase() {
 			renderLayers.clear();
 		}
 

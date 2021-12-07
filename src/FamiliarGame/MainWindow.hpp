@@ -1,9 +1,9 @@
 #pragma once
 #include <FamiliarEngine/Base.hpp>
 
-class MainWindow : public FamiliarEngine::IWindowContainer {
+class MainWindow : public FamiliarEngine::WindowHandlerBase {
 public:
-	MainWindow() : FamiliarEngine::IWindowContainer(){};
+	MainWindow() : FamiliarEngine::WindowHandlerBase(){};
 
 	virtual void open() override {
 		FamiliarEngine::WindowSettings windowSettings = FamiliarEngine::WindowSettings().setNativeFullScreen();
