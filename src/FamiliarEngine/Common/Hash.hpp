@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include <stdint.h>
 
 namespace FamiliarEngine {
 	constexpr uint32_t hash32BitOffset = 0x811c9dc5;

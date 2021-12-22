@@ -1,11 +1,13 @@
-#include <FamiliarEngine/Filesystem/Serialization.hpp>
+#include <FamiliarEngine/Serialization.hpp>
 
 using namespace FamiliarEngine;
 class Dog : public ISerializable {
-    std::string name = "Doggo";
-    int age = 15;
+    std::string name = "";
+    int age = 0;
 public:
-    Dog(std::string _name, int _age) : name(_name), age(_age){};
+    Dog(std::string _name, int _age) 
+        : name(_name),
+        age(_age){};
 
     virtual void serialize(SerializablePackage& package) override
     {
@@ -32,7 +34,7 @@ public:
 
 int main()
 {
-    Dog dog = Dog("Alfonso", 6666);
+    Dog dog = Dog("bbb", 17);
     Deserializer(&dog).handle();
     system("pause");
     return 0;
