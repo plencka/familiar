@@ -6,6 +6,7 @@ namespace FamiliarEngine {
     class Serializer : public File<std::ofstream> {
     private:
         ISerializable* serializable;
+
     public:
         Serializer(ISerializable* serializableObject) :
             File(serializableObject->getFilename(), serializableObject->getPath()),

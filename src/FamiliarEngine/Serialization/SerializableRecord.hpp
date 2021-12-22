@@ -5,10 +5,12 @@
 
 namespace FamiliarEngine {
     class SerializableRecord {
+    private:
         uint32_t recordId = 0;
         unsigned long long pSize = 0;
         char* value;
         bool shouldDeleteValue = false;
+
     public:
         SerializableRecord(std::string name, unsigned long long size, char* pParam, unsigned int depth = 0) {
             recordId = getIdentity(name, depth);
