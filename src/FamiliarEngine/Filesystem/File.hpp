@@ -9,23 +9,22 @@ class File {
 
 protected:
 	FileStream* stream;
-	
 	const std::string name;
 	const std::string path;
 	const std::string pathName;
 
 protected:
-	File(FileStream* fileStream, std::string filename, std::string filepath = "") :
-		stream(fileStream),
+	File(std::string filename, std::string filepath = "") :
+		stream(new FileStream()),
 		pathName(filepath + filename),
 		name(filename),
-		path(filepath){}
+		path(filepath){
+		};
 
 	~File() {
-		if (stream) {
-			stream->clear();
-			stream->close();
-		}
+		stream->clear();
+		stream->close();
+		delete stream;
 	};
 
 	virtual void handle() = 0;

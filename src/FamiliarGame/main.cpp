@@ -1,28 +1,39 @@
 #include <FamiliarEngine/Filesystem/Serialization.hpp>
 
-class Dog {
-    std::string name = 0;
+using namespace FamiliarEngine;
+class Dog : public ISerializable {
+    std::string name = "Doggo";
+    int age = 15;
 public:
-    Dog(std::string _id) : name(_id) {};
+    Dog(std::string _name, int _age) : name(_name), age(_age){};
+
+    virtual void serialize(SerializablePackage& package) override
+    {
+        package.insert(&name, "name");
+        package.insert(&age, "age");
+    }
+
+    virtual void deserialize(SerializablePackage& package) override
+    {
+        package.retrieve(&age, "age");
+        package.retrieve(&name, "name");
+    }
+
+    virtual std::string getFilename() override
+    {
+        return "Dog.bin";
+    }
+
+    virtual std::string getPath() override
+    {
+        return "";
+    }
 };
+
 int main()
 {
-    /*auto dog = new Dog();
-    int* param = (int*)&dog->name;
-    int* param2 = (int*)&"aaa";
-    *param = *param2;
-    sizeof(param);*/
-
-    //ObjectID, ParamID, Value
-    std::string name = "Bbb";
-    auto record = FamiliarEngine::SerializableRecord("name", name.size(), &name[0]);
-    std::ifstream fileStream("name.bin",
-        std::ifstream::in
-        | std::ifstream::binary);
-
-
-    fileStream.clear();
-    fileStream.close();
+    Dog dog = Dog("Alfonso", 6666);
+    Deserializer(&dog).handle();
     system("pause");
     return 0;
 }
