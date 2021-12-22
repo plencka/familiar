@@ -1,41 +1,10 @@
-#include <FamiliarEngine/Serialization.hpp>
-
-using namespace FamiliarEngine;
-class Dog : public ISerializable {
-    std::string name = "";
-    int age = 0;
-public:
-    Dog(std::string _name, int _age) 
-        : name(_name),
-        age(_age){};
-
-    virtual void serialize(SerializablePackage& package) override
-    {
-        package.insert(&name, "name");
-        package.insert(&age, "age");
-    }
-
-    virtual void deserialize(SerializablePackage& package) override
-    {
-        package.retrieve(&age, "age");
-        package.retrieve(&name, "name");
-    }
-
-    virtual std::string getFilename() override
-    {
-        return "Dog.bin";
-    }
-
-    virtual std::string getPath() override
-    {
-        return "";
-    }
-};
+#include "MainWindow.hpp"
 
 int main()
 {
-    Dog dog = Dog("bbb", 17);
-    Deserializer(&dog).handle();
-    system("pause");
+    std::unique_ptr<MainWindow> window = std::make_unique<MainWindow>();
+    window->open();
+
+    while (window->update());
     return 0;
 }
