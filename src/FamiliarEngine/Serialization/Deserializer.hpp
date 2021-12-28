@@ -1,6 +1,6 @@
 #pragma once
-#include "FamiliarEngine/Filesystem.hpp"
-#include "ISerializable.hpp"
+#include "Filesystem/File.hpp"
+#include "Serialization/Interfaces/ISerializable.hpp"
 
 namespace FamiliarEngine {
     class Deserializer : public File<std::ifstream> {

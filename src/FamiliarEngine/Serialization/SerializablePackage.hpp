@@ -1,6 +1,5 @@
 #pragma once
-#include "FamiliarEngine/Common.hpp"
-#include "SerializableRecord.hpp"
+#include "Serialization/SerializableRecord.hpp"
 #include <unordered_map>
 
 namespace FamiliarEngine {

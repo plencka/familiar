@@ -24,6 +24,8 @@ RUN rm -rf ../builds \
     -lsfml-system \
     -lsfml-audio \
     -L. -I. \
+    -L./FamiliarGame -I./FamiliarGame \
+    -L./FamiliarEngine -I./FamiliarEngine \
     && mkdir -p ../builds/Win_x86_64 \
     && x86_64-w64-mingw32-g++ -std=c++14 ./FamiliarGame/main.cpp -o ../builds/Win_x86_64/${APP_NAME}.exe \
     -L/externals/SFML-2.5.1/lib -I/externals/SFML-2.5.1/include \
@@ -36,5 +38,7 @@ RUN rm -rf ../builds \
     -lfreetype \
     -lopengl32 -lwinmm -lgdi32 \
     -L. -I. \
+    -L./FamiliarGame -I./FamiliarGame \
+    -L./FamiliarEngine -I./FamiliarEngine \
     && cp -R /application/game/data ../builds/Linux \
     && cp -R /application/game/data ../builds/Win_x86_64

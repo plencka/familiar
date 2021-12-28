@@ -1,6 +1,6 @@
 #pragma once
-#include "FamiliarEngine/Common.hpp"
-#include "FamiliarEngine/Filesystem.hpp"
+#include "Common/Hash.hpp"
+#include "Filesystem/File.hpp"
 #include <string>
 
 namespace FamiliarEngine {

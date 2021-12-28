@@ -1,60 +1,67 @@
 #pragma once
+#include "Common/BasicIncludes.hpp"
 #include <set>
 #include <SFML/Graphics.hpp>
+#include "Rendering/Interfaces/IRenderable.hpp"
 
 namespace FamiliarEngine {
-	enum class RenderLayerOrder : int {
-		Background = -1,
-		Terrain = 0,
-		Default = 1,
-		Entity = 2,
-		Player = 3,
-		Foreground = 4,
-		GUI = 100,
-		GUIBackground = GUI + 1,
-		GUIBorder = GUI + 2,
-		GUIImage = GUI + 3,
-		GUIClickable = GUI + 4,
-		GUIText = GUI + 5,
+	enum class RenderLayerAction : unsigned int {
+		Add = 0,
+		Remove = 1,
+		Refresh = 2,
 	};
 
 	class RenderLayer {
 	private:
-		RenderLayerOrder renderOrder;
-		std::multimap<int, sf::Drawable*> drawables;
+		std::multimap<int, std::weak_ptr<sf::Drawable>> drawables{};
 
-	public:
-		RenderLayer(RenderLayerOrder order){
-			drawables = {};
-			renderOrder = order;
-		}
-
-		RenderLayerOrder getRenderOrder() {
-			return renderOrder;
-		};
-
-		void addDrawable(int zPosition, sf::Drawable* drawable) {
+		void addDrawable(int zPosition, std::shared_ptr<sf::Drawable> drawable) {
 			drawables.emplace(zPosition, drawable);
 		};
 
-		void removeDrawable(sf::Drawable* drawable) {
-			for (std::multimap<int, sf::Drawable*>::iterator it = drawables.begin(); it != drawables.end(); it++) {
-				if (it->second == drawable) {
+		void removeDrawable(std::shared_ptr<sf::Drawable> drawable) {
+			if (!drawable) {
+				return;
+			}
+
+			for (std::multimap<int, std::weak_ptr<sf::Drawable>>::iterator it = drawables.begin(); it != drawables.end(); it++) {
+				if (it->second.lock() == drawable) {
 					drawables.erase(it);
 					return;
 				}
 			}
 		};
 
-		void refreshDrawable(int zPosition, sf::Drawable* drawable) {
+		void refreshDrawable(int zPosition, std::shared_ptr<sf::Drawable> drawable) {
 			removeDrawable(drawable);
 			addDrawable(zPosition, drawable);
 		}
 
-		void draw(sf::RenderWindow& window) {
-			for (auto const& drawable : drawables)
-			{
-				window.draw(*drawable.second);
+	public:
+		void handle(std::shared_ptr<IRenderable> renderable, RenderLayerAction action) {
+			switch (action) {
+				case RenderLayerAction::Add:
+					addDrawable(renderable->getVerticalPosition(), renderable->getDrawable());
+					break;
+				case RenderLayerAction::Remove:
+					removeDrawable(renderable->getDrawable());
+					break;
+				case RenderLayerAction::Refresh:
+					refreshDrawable(renderable->getVerticalPosition(), renderable->getDrawable());
+					break;
+				default:
+					break;
+			}
+		}
+
+		void draw(std::shared_ptr<sf::RenderWindow> window) {
+			for (std::multimap<int, std::weak_ptr<sf::Drawable>>::iterator it = drawables.begin(); it != drawables.end(); it++) {
+				if (std::shared_ptr<sf::Drawable> drawable = it->second.lock()) {
+					window->draw(*drawable.get());
+				}
+				else {
+					it = drawables.erase(it);
+				}
 			}
 		};
 	};

@@ -1,5 +1,5 @@
 #pragma once
-#include <stdint.h>
+#include "Common/BasicIncludes.hpp"
 
 namespace FamiliarEngine {
 	constexpr uint32_t hash32BitOffset = 0x811c9dc5;
