@@ -1,8 +1,8 @@
 #pragma once
 #include "Common/BasicIncludes.hpp"
+#include "Rendering/Interfaces/IRenderable.hpp"
 #include <set>
 #include <SFML/Graphics.hpp>
-#include "Rendering/Interfaces/IRenderable.hpp"
 
 namespace FamiliarEngine {
 	enum class RenderLayerAction : unsigned int {
@@ -13,6 +13,7 @@ namespace FamiliarEngine {
 
 	class RenderLayer {
 	private:
+		sf::Vector2f viewAnchor = { 0, 0 };
 		std::multimap<int, std::weak_ptr<sf::Drawable>> drawables{};
 
 		void addDrawable(int zPosition, std::shared_ptr<sf::Drawable> drawable) {
@@ -38,6 +39,8 @@ namespace FamiliarEngine {
 		}
 
 	public:
+		RenderLayer(sf::Vector2f _viewAnchor = {0,0}) : viewAnchor(_viewAnchor) {}
+
 		void handle(std::shared_ptr<IRenderable> renderable, RenderLayerAction action) {
 			switch (action) {
 				case RenderLayerAction::Add:
@@ -55,6 +58,7 @@ namespace FamiliarEngine {
 		}
 
 		void draw(std::shared_ptr<sf::RenderWindow> window) {
+			window->setView(sf::View(viewAnchor, window->getView().getSize()));
 			for (std::multimap<int, std::weak_ptr<sf::Drawable>>::iterator it = drawables.begin(); it != drawables.end(); it++) {
 				if (std::shared_ptr<sf::Drawable> drawable = it->second.lock()) {
 					window->draw(*drawable.get());
@@ -64,5 +68,9 @@ namespace FamiliarEngine {
 				}
 			}
 		};
+
+		void setAnchor(sf::Vector2f _viewAnchor) {
+			viewAnchor = _viewAnchor;
+		}
 	};
 }

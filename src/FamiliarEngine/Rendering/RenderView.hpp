@@ -10,18 +10,25 @@ namespace FamiliarEngine {
 		std::map<RenderLayerOrder, std::unique_ptr<RenderLayer>> renderLayers = {};
 
 	protected:
-		inline void addLayer(RenderLayerOrder order) {
-			renderLayers.emplace(order, std::make_unique<RenderLayer>());
+		inline void addLayer(RenderLayerOrder order, sf::Vector2f viewAnchor = { 0,0 }) {
+			renderLayers.emplace(order, std::make_unique<RenderLayer>(viewAnchor));
 		}
 
-		virtual void initializeLayers() {
-			addLayer(RenderLayerOrder::Default);
+		virtual void initializeLayers(std::shared_ptr<sf::RenderWindow> window) {
+			addLayer(RenderLayerOrder::Background, window->getDefaultView().getCenter());
+			addLayer(RenderLayerOrder::Entity, { 0,0 });
+			addLayer(RenderLayerOrder::GUI, window->getDefaultView().getCenter());
 		}
 
 	public:
 		RenderView(std::shared_ptr<sf::RenderWindow> window)
 			: renderWindow(window) {
-			initializeLayers();
+			initializeLayers(window);
+		}
+
+		void adjustLayers(std::shared_ptr<sf::RenderWindow> window){
+			renderLayers[RenderLayerOrder::Background]->setAnchor(window->getDefaultView().getCenter());
+			renderLayers[RenderLayerOrder::GUI]->setAnchor(window->getDefaultView().getCenter());
 		}
 
 		void handleRenderable(std::shared_ptr<IRenderable> renderable, RenderLayerAction action) {
@@ -36,9 +43,8 @@ namespace FamiliarEngine {
 			return true;
 		}
 
-		virtual void update(float deltaTime) override {
+		virtual void update(double deltaTime) override {
 			if (std::shared_ptr<sf::RenderWindow> window = renderWindow.lock()) {
-				window->setView(sf::View(sf::Vector2f(0, 0), window->getView().getSize()));
 				window->clear();
 				for (auto& renderLayer : renderLayers)
 				{

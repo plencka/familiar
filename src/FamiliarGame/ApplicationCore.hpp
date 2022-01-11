@@ -1,6 +1,6 @@
 #pragma once
 #include <FamiliarEngine/Base.hpp>
-#include "Context/StarSystemContext.hpp"
+#include "StarSystemContext/StarSystemContext.hpp"
 
 using namespace FamiliarEngine;
 
@@ -10,7 +10,6 @@ private:
 
 private:
 	virtual void initialize() override {
-		std::cout << "Hello from AppCore\n";
 		addContext(starSystem);
 		changeCurrentContext(starSystem->getContextId());
 	}

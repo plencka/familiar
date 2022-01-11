@@ -16,6 +16,8 @@ namespace FamiliarEngine {
 
 	class Core : public ContextManager {
 	private:
+		WindowSettings windowSettings;
+		sf::Clock clock;
 		CoreState state = CoreState::NoInit;
 		std::shared_ptr<sf::RenderWindow> window;
 
@@ -23,16 +25,15 @@ namespace FamiliarEngine {
 		virtual void initialize() = 0;
 
 		Core() 
-			: window(std::make_shared<sf::RenderWindow>()) {}
+			: window(std::make_shared<sf::RenderWindow>()) {
+			windowSettings = FamiliarEngine::WindowSettings().setNativeFullScreen();
+			window->create(windowSettings.getVideoMode(), windowSettings.getTitle(), windowSettings.getStyle());
+			window->setVerticalSyncEnabled(true);
+			clock.restart();
+			state = CoreState::OK;
+		}
 
 	public:
-		void launch() {
-			WindowSettings windowSettings = FamiliarEngine::WindowSettings().setNativeFullScreen();
-			window->create(windowSettings.getVideoMode(), windowSettings.getTitle(), windowSettings.getStyle());
-
-			state = CoreState::OK;
-		};
-
 		void quit() {
 			currentContext->exit();
 			window->clear(sf::Color::Black);
@@ -42,7 +43,15 @@ namespace FamiliarEngine {
 			state = CoreState::Quit;
 		}
 
+		double getDeltaFrame() {
+			float delta = clock.getElapsedTime().asMilliseconds() / 1000.0;
+
+			return (delta < 0.00001) ? 0.00001 : delta;
+		}
+
 		void handleEvents() {
+			double delta = getDeltaFrame();
+
 			sf::Event sfmlEvent;
 			while (window->pollEvent(sfmlEvent))
 			{
@@ -52,8 +61,10 @@ namespace FamiliarEngine {
 			};
 
 			if (currentContext) {
-				currentContext->processUpdate();
+				currentContext->processUpdate(delta);
 			}
+
+			clock.restart();
 		};
 
 		CoreState getState() {
