@@ -32,14 +32,4 @@ public:
 	virtual std::shared_ptr<sf::Drawable> getDrawable() override {
 		return sprite;
 	};
-
-	virtual void setPosition(float x, float y) override {
-		lastPosition = { x, y };
-		sprite->setPosition(x, y);
-	}
-
-	virtual void setScale(float newScale) {
-		scale = newScale;
-		sprite->setScale(scale, scale);
-	};
 };

@@ -6,7 +6,6 @@ using namespace FamiliarEngine;
 
 class Planet : public CelestialBase {
 private:
-	std::shared_ptr<sf::Sprite> sprite;
 	sf::Texture texture;
 	sf::RectangleShape shape;
 public:
@@ -27,20 +26,15 @@ public:
 	}
 
 	virtual int getVerticalPosition() override {
-		return sprite->getPosition().y;
+		if (sprite) {
+			return sprite->getPosition().y;
+		}
+		else {
+			return 0;
+		}
 	};
 
 	virtual std::shared_ptr<sf::Drawable> getDrawable() override {
 		return sprite;
-	};
-
-	virtual void setPosition(float x, float y) override {
-		lastPosition = { x, y };
-		sprite->setPosition(x, y);
-	}
-
-	virtual void setScale(float newScale) {
-		scale = newScale;
-		sprite->setScale(scale, scale);
 	};
 };

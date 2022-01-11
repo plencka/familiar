@@ -1,12 +1,14 @@
 #pragma once
 #include <FamiliarEngine/Base.hpp>
-#include <FamiliarGame/StarSystemContext/Interfaces/IOrbitable.hpp>
+#include "FamiliarGame/StarSystemContext/Interfaces/IOrbitable.hpp"
 
 using namespace FamiliarEngine;
 
 class CelestialBase : public IRenderable, public IOrbitable {
 protected:
 	std::weak_ptr<IOrbitable> parentBody;
+
+	std::shared_ptr<sf::Sprite> sprite;
 	float scale = 1;
 	sf::Vector2f orbitPoint = { 0,0 };
 	sf::Vector2f lastPosition = { 0,0 };
@@ -15,7 +17,6 @@ protected:
 	float cycleOffset = 0;
 	float speed = 1;
 
-protected:
 	CelestialBase(){}
 
 public:
@@ -41,7 +42,7 @@ public:
 	};
 
 	virtual float getSpeed() override {
-		return speed;
+		return speed * (1 / scale);
 	};
 
 	virtual float getScale() override {
@@ -59,4 +60,18 @@ public:
 	virtual void setParent(std::shared_ptr<IOrbitable> parent) {
 		parentBody = parent;
 	}
+
+	virtual void setPosition(float x, float y) override {
+		lastPosition = { x, y };
+		if (sprite) {
+			sprite->setPosition(x, y);
+		}
+	}
+
+	virtual void setScale(float newScale) override {
+		scale = newScale;
+		if (sprite) {
+			sprite->setScale(scale, scale);
+		}
+	};
 };
