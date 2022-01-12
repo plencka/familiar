@@ -12,7 +12,8 @@ protected:
 	float currentScale = 1;
 
 protected:
-	CelestialBase() {
+	CelestialBase(std::shared_ptr<CelestialBase> parent = nullptr) {
+		setParent(std::dynamic_pointer_cast<IOrbitable>(parent));
 		sprite = std::make_shared<sf::Sprite>();
 	}
 
@@ -53,4 +54,9 @@ public:
 				sprite->getTextureRect().height / 2.0f);
 		}
 	};
+
+	virtual void setRandomColor() {
+		std::vector<sf::Color> colors = { sf::Color::White};
+		sprite->setColor(colors[rand() % colors.size()]);
+	}
 };
