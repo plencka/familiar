@@ -6,7 +6,7 @@ using namespace FamiliarEngine;
 
 class Planet : public CelestialBase {
 public:
-	Planet() {
+	Planet(std::shared_ptr<CelestialBase> parent) : CelestialBase(parent) {
 		if (!texture.loadFromFile("data/textures/celestials/planet.png")) {
 			return;
 		};
@@ -16,7 +16,7 @@ public:
 		setScale(1);
 	}
 
-	void setRandomColor() {
+	virtual void setRandomColor() override {
 		std::vector<sf::Color> colors = { sf::Color::Red, sf::Color::Yellow, sf::Color::White, sf::Color::Blue,
 		sf::Color::Green, sf::Color::Cyan};
 		sprite->setColor(colors[rand() % colors.size()]);

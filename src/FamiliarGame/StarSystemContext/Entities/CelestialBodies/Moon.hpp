@@ -5,8 +5,7 @@ using namespace FamiliarEngine;
 
 class Moon : public Planet {
 public:
-	Moon(std::shared_ptr<Planet> parent) : Planet() {
-		setParent(parent);
+	Moon(std::shared_ptr<CelestialBase> parent) : Planet(parent) {
 		usesVerticalModifier = false;
 	}
 };

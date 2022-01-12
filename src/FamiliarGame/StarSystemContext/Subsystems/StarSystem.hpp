@@ -1,8 +1,8 @@
 #include <FamiliarEngine/Base.hpp>
 #include <FamiliarGame/StarSystemContext/Entities/CelestialBodies.hpp>
 #include <FamiliarGame/StarSystemContext/Entities/VisualEffects.hpp>
+#include <FamiliarGame/StarSystemContext/Components/StarSystemRecipe.hpp>
 #include "OrbitablesManager.hpp"
-#include "StarSystemRecipe.hpp"
 
 using namespace FamiliarEngine;
 
@@ -21,9 +21,11 @@ private:
 	sf::Vector2f moonSize = { 0.3f, 0.5f };
 
 	unsigned int generatedMoonCount = 0;
-	float planetOffset = 80;
+	float planetOffset = 90;
 	float starOffset = 80;
 	float moonOffset = 35;
+	sf::Vector2f speedOffset = {1, 3};
+	sf::Vector2f cycleOffset = {0, 10000};
 
 	void addCelestialBody(std::shared_ptr<CelestialBase> body, bool isPrimary = false) {
 		celestialBodies.emplace(lastCelestialId++, body);
@@ -39,50 +41,24 @@ private:
 		}
 	}
 
-	std::shared_ptr<Star> generatePrimaryStar() {
-		std::shared_ptr<Star> starPrime = std::make_shared<Star>();
-		starPrime->setScale(Math::Random::getRandom(primaryStarSize.x, primaryStarSize.y));
-		starPrime->setRandomColor();
-		primaryStar = starPrime;
-		addCelestialBody(starPrime, true);
+	template <class CelestialBaseType>
+	std::shared_ptr<CelestialBaseType> generateCelestial(int celestialIndex,
+		std::shared_ptr<CelestialBase> parent,
+		sf::Vector2f visualSize,
+		float orbitOffset,
+		float speedModifier = 1,
+		bool isPrimary = false)
+	{
+		std::shared_ptr<CelestialBaseType> celestial = std::make_shared<CelestialBaseType>(parent);
 
-		return starPrime;
-	}
+		celestial->setScale(Math::Random::getRandom(visualSize.x, visualSize.y));
+		celestial->setRandomColor();
+		celestial->setOrbitOffset(orbitOffset * celestialIndex);
+		celestial->setCycleOffset(orbitOffset * celestialIndex + Math::Random::getRandom(cycleOffset.x, cycleOffset.y));
+		celestial->setOrbitSpeed(Math::Random::getRandom(speedOffset.x * speedModifier, speedOffset.y * speedModifier));
 
-	std::shared_ptr<Star> generateSecondaryStar() {
-		std::shared_ptr<Star> star = std::make_shared<Star>();
-		star->setScale(Math::Random::getRandom(secondaryStarSize.x, secondaryStarSize.y));
-		star->setRandomColor();
-		star->setOrbitOffset(starOffset * lastCelestialId);
-		star->setCycleOffset(starOffset * lastCelestialId + Math::Random::getRandom(0.0f, 10000.0f));
-		star->setOrbitSpeed(Math::Random::getRandom(1.0f, 1.0f));
-		addCelestialBody(star);
-
-		return star;
-	}
-
-	std::shared_ptr<Planet> generatePlanet() {
-		std::shared_ptr<Planet> planet = std::make_shared<Planet>();
-		planet->setScale(Math::Random::getRandom(planetSize.x, planetSize.y));
-		planet->setRandomColor();
-		planet->setOrbitOffset(planetOffset * (lastCelestialId - generatedMoonCount));
-		planet->setCycleOffset(planetOffset * (lastCelestialId - generatedMoonCount) + Math::Random::getRandom(0.0f, 10000.0f));
-		planet->setOrbitSpeed(Math::Random::getRandom(1.0f, 3.0f));
-		addCelestialBody(planet);
-
-		return planet;
-	}
-
-	std::shared_ptr<Moon> generateMoon(std::shared_ptr<Planet> parentPlanet, int moonIndex) {
-		std::shared_ptr<Moon> moon = std::make_shared<Moon>(parentPlanet);
-		moon->setScale(Math::Random::getRandom(moonSize.x, moonSize.y));
-		moon->setOrbitOffset(moonOffset * moonIndex);
-		moon->setCycleOffset(moonOffset * moonIndex + Math::Random::getRandom(0.0f, 10000.0f));
-		moon->setOrbitSpeed(Math::Random::getRandom(10.0f, 20.0f));
-		addCelestialBody(moon);
-		generatedMoonCount++;
-
-		return moon;
+		addCelestialBody(celestial, isPrimary);
+		return celestial;
 	}
 
 public:
@@ -108,16 +84,17 @@ public:
 		discardOrbitingBodies();
 		uint32_t seed = recipe.getSeed();
 		srand(seed);
-		std::shared_ptr<Star> starPrime = generatePrimaryStar();
+		std::shared_ptr<Star> starPrime = generateCelestial<Star>(lastCelestialId, nullptr, primaryStarSize, 0, 1, true);
 
 		for (int i = 0; i < recipe.getSecondaryStarCount(); i++) {
-			generateSecondaryStar();
+			generateCelestial<Star>(lastCelestialId, std::dynamic_pointer_cast<CelestialBase>(starPrime), secondaryStarSize, starOffset, 1);
 		}
 
 		for (int i = 0; i < recipe.getPlanetCount(); i++) {
-			std::shared_ptr<Planet> planet = generatePlanet();
+			std::shared_ptr<Planet> planet = generateCelestial<Planet>(lastCelestialId - generatedMoonCount, starPrime, planetSize, planetOffset, 1);
 			for (int j = 0; j < Math::Random::getRandom(0, recipe.getMaxMoonCount()); j++) {
-				generateMoon(planet, j+1);
+				generateCelestial<Moon>(j + 1, std::dynamic_pointer_cast<CelestialBase>(planet), moonSize, moonOffset, 10);
+				generatedMoonCount++;
 			}
 		}
 	}
