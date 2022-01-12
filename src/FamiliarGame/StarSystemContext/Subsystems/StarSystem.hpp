@@ -1,8 +1,8 @@
 #include <FamiliarEngine/Base.hpp>
 #include <FamiliarGame/StarSystemContext/Entities/CelestialBodies.hpp>
 #include <FamiliarGame/StarSystemContext/Entities/VisualEffects.hpp>
+#include <FamiliarGame/StarSystemContext/Components/StarSystemRecipe.hpp>
 #include "OrbitablesManager.hpp"
-#include "StarSystemRecipe.hpp"
 
 using namespace FamiliarEngine;
 

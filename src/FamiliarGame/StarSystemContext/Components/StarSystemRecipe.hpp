@@ -33,8 +33,8 @@ public:
         setTimestampSeed();
         
         srand(seed);
-        countSecondaryStars = rand() % maxSecondaryStarCount + 1;
-        countPlanets = rand() % maxPlanetCount + minPlanetCount;
+        countSecondaryStars = Math::Random::getRandom(0, maxSecondaryStarCount);
+        countPlanets = Math::Random::getRandom(minPlanetCount, maxPlanetCount);
     }
 
 	void setTimestampSeed() {
