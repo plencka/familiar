@@ -4,6 +4,7 @@
 // COMMON
 #include "Common/BasicIncludes.hpp"
 #include "Common/Hash.hpp"
+#include "Common/Math.hpp"
 
 // FILESYSTEM
 #include "Filesystem/File.hpp"
