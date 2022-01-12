@@ -11,6 +11,7 @@ namespace FamiliarEngine {
 
 	public:
 		virtual void enter() = 0;
+		virtual void parseEvents(std::vector<sf::Event> passedEvents) = 0;
 		virtual void exit() = 0;
 
 		uint32_t getContextId() {

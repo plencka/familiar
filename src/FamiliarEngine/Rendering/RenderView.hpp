@@ -39,6 +39,20 @@ namespace FamiliarEngine {
 			}
 		}
 
+		std::shared_ptr<sf::RenderWindow> getWindow() {
+			return renderWindow.lock();
+		}
+
+		float getAspectRatio() {
+			if (std::shared_ptr<sf::RenderWindow> window = renderWindow.lock()) {
+				sf::Vector2f size = window->getView().getSize();
+				return size.x / size.y;
+			}
+			else {
+				return 1;
+			}
+		}
+
 		virtual bool shouldUpdate() override {
 			return true;
 		}

@@ -1,40 +1,24 @@
 #pragma once
 #include <FamiliarEngine/Base.hpp>
-#include "CelestialBase.hpp"
+#include <FamiliarGame/StarSystemContext/Components/CelestialBase.hpp>
 
 using namespace FamiliarEngine;
 
 class Planet : public CelestialBase {
-private:
-	sf::Texture texture;
-	sf::RectangleShape shape;
 public:
-	Planet(float startOffset, float axisMod) {
-		sprite = std::make_shared<sf::Sprite>();
-		sprite->setScale(getScale(), getScale());
-
+	Planet() {
 		if (!texture.loadFromFile("data/textures/celestials/planet.png")) {
 			return;
 		};
 
 		sprite->setTexture(texture);
-		sprite->setOrigin(sprite->getTextureRect().width / 2.0f,
-			sprite->getTextureRect().height / 2.0f);
-
-		orbitOffset = startOffset;
-		verticalModifier = axisMod;
+		usesVerticalModifier = true;
+		setScale(1);
 	}
 
-	virtual int getVerticalPosition() override {
-		if (sprite) {
-			return sprite->getPosition().y;
-		}
-		else {
-			return 0;
-		}
-	};
-
-	virtual std::shared_ptr<sf::Drawable> getDrawable() override {
-		return sprite;
-	};
+	void setRandomColor() {
+		std::vector<sf::Color> colors = { sf::Color::Red, sf::Color::Yellow, sf::Color::White, sf::Color::Blue,
+		sf::Color::Green, sf::Color::Cyan};
+		sprite->setColor(colors[rand() % colors.size()]);
+	}
 };

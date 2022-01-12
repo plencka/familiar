@@ -30,6 +30,7 @@ namespace FamiliarEngine {
 			window->create(windowSettings.getVideoMode(), windowSettings.getTitle(), windowSettings.getStyle());
 			window->setVerticalSyncEnabled(true);
 			clock.restart();
+
 			state = CoreState::OK;
 		}
 
@@ -46,21 +47,27 @@ namespace FamiliarEngine {
 		double getDeltaFrame() {
 			float delta = clock.getElapsedTime().asMilliseconds() / 1000.0;
 
-			return (delta < 0.00001) ? 0.00001 : delta;
+			return (delta < 0.0001) ? 0.0001 : delta;
 		}
 
 		void handleEvents() {
 			double delta = getDeltaFrame();
 
+			std::vector<sf::Event> passedEvents;
 			sf::Event sfmlEvent;
 			while (window->pollEvent(sfmlEvent))
 			{
 				if (sfmlEvent.type == sf::Event::Closed) {
 					quit();
 				}
+
+				if (sfmlEvent.type == sf::Event::KeyPressed) {
+					passedEvents.push_back(sfmlEvent);
+				}
 			};
 
 			if (currentContext) {
+				currentContext->parseEvents(passedEvents);
 				currentContext->processUpdate(delta);
 			}
 
