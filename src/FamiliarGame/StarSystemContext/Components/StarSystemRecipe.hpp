@@ -45,15 +45,11 @@ public:
     virtual void serialize(SerializablePackage& package) override
     {
         package.insert(&seed, "seed");
-        package.insert(&countSecondaryStars, "secondaryStarCount");
-        package.insert(&countPlanets, "countPlanets");
     }
 
     virtual void deserialize(SerializablePackage& package) override
     {
         package.retrieve(&seed, "seed");
-        package.retrieve(&countSecondaryStars, "secondaryStarCount");
-        package.retrieve(&countPlanets, "countPlanets");
     }
 
     virtual std::string getFilename() override
